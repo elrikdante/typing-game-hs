@@ -1,3 +1,5 @@
+/* Authour: Dante Elrik */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "lib.h"
@@ -5,7 +7,7 @@
 
 SDL_Window*    Window   = NULL;
 SDL_Renderer*  Renderer = NULL;
-SDL_Surface*   PrimaryS =NULL;
+SDL_Surface*   PrimaryS = NULL;
 
 static const int WINDOW_HEIGHT=500;
 static const int WINDOW_WIDTH =500;
@@ -27,13 +29,14 @@ setup(void) {
     fprintf(stderr, "Could not initialise %s\n",SDL_GetError());
     ERR()
   }
-  if (NULL == (Window = SDL_CreateWindow(
+  Window = SDL_CreateWindow(
 			       "X",
 			       SDL_WINDOWPOS_CENTERED,
 			       SDL_WINDOWPOS_CENTERED,
 			       WINDOW_HEIGHT,
 			       WINDOW_WIDTH,
-			       SDL_WINDOW_SHOWN))) {
+			       SDL_WINDOW_SHOWN);
+  if (NULL == Window) {
      fprintf(stderr, "Could not create window %s\n",SDL_GetError());
      ERR()
   }
@@ -48,7 +51,7 @@ setup(void) {
 
   int done = 0; 
   while (!done) {
-    SDL_SetRenderDrawColor(Renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(Renderer, BLK);
     SDL_RenderClear(Renderer);
     SDL_RenderPresent(Renderer);
     
