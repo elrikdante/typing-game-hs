@@ -3,5 +3,6 @@
 #source: http://wiki.libsdl.org/SDL_RenderPresent
 #source: https://forums.libsdl.org/viewtopic.php?t=9163sid=23359eedacf25591f8fe7c3423342de4SDL2
 #source: https://github.com/elrikdante/sdl-starfield/blob/master/main.c
+#(LLDB | GDB) http://lldb.llvm.org/lldb-gdb.html
 
 brew install sdl2
