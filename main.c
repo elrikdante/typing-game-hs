@@ -21,16 +21,18 @@ void
 some_func_impure(int a, int b) {
    printf("THE ANSWER: %d \n", some_func(a,b));
 }
-SDL_Surface *
-load_image(void) {
+
+SDL_Texture *
+loadTextureFromImage(char* filename) {
   int req_format = STBI_rgb_alpha;
   int width, height, orig_format;
   unsigned char* data = stbi_load(
-				  "./dist/logo.png",
+				  filename,
 				  &width,
 				  &height,
 				  &orig_format,
 				  req_format);
+  SDL_Texture* texture;
   if(data == NULL) {
     fprintf(stderr,"Loading image failed: %s", stbi_failure_reason());
     ERR()
@@ -67,12 +69,13 @@ load_image(void) {
     ERR()
   }
 
-  LogoT = SDL_CreateTextureFromSurface(Renderer, surf);
-  if (NULL == LogoT) {
+  texture = SDL_CreateTextureFromSurface(Renderer, surf);
+  if (NULL == texture) {
      fprintf(stderr, "SDL_CreateTextureFromSurface(): %s\n",SDL_GetError());
      ERR()
   }
-  return surf;
+  stbi_image_free(data);
+  return texture;
 }
 
 void
@@ -139,7 +142,7 @@ setup(void) {
         ERR()
   }
 
-  load_image();				  
+  LogoT = loadTextureFromImage("./dist/logo.png");
 }
 
 void
