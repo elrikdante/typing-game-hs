@@ -1,10 +1,5 @@
 /* Authour: Dante Elrik */
-
-#include <stdio.h>
-#include <stdlib.h>
 #include "lib.h"
-#include "SDL2/SDL.h"
-
 SDL_Window*    Window   = NULL;
 SDL_Renderer*  Renderer = NULL;
 SDL_Surface*   PrimaryS = NULL;
@@ -25,39 +20,52 @@ void
 some_func_impure(int a, int b) {
    printf("THE ANSWER: %d \n", some_func(a,b));
 }
-
 void
-loop(void) {
-  FrameCnt ++;
-  if (Done) {
-    SDL_Quit();
-    return;
+load_image(void) {
+  int req_format = STBI_rgb_alpha;
+  int width, height, orig_format;
+  unsigned char* data = stbi_load(
+				  "./dist/logo.png",
+				  &width,
+				  &height,
+				  &orig_format,
+				  req_format);
+  if(data == NULL) {
+    fprintf(stderr,"Loading image failed: %s", stbi_failure_reason());
+    ERR()
   }
   
-  SDL_SetRenderDrawColor(Renderer, BLK);
-  SDL_RenderClear(Renderer);
+  Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  int shift = (req_format == STBI_rgb) ? 8 : 0;
+  rmask = 0xff000000 >> shift;
+  gmask = 0x00ff0000 >> shift;
+  bmask = 0x0000ff00 >> shift;
+  amask = 0x000000ff >> shift;
+#else // little endian, like x86
+  rmask = 0x000000ff;
+  gmask = 0x0000ff00;
+  bmask = 0x00ff0000;
+  amask = (req_format == STBI_rgb) ? 0 : 0xff000000;
+#endif
 
-  int x,y;
-  for(x=0; x < WINDOW_WIDTH; x++) {
-    for(y=0; y < WINDOW_HEIGHT; y++) {
-      SDL_SetRenderDrawColor(Renderer, RGB(0,x,y));
-      SDL_RenderDrawPoint(Renderer, x, y);
-    }
+  int depth, pitch;
+  if (req_format == STBI_rgb) {
+    depth = 24;
+    pitch = 3*width; // 3 bytes per pixel * pixels per row
+  } else { // STBI_rgb_alpha (RGBA)
+    depth = 32;
+    pitch = 4*width;
   }
-  SDL_RenderPresent(Renderer);
-  
-  while (SDL_PollEvent(&event)) { 
-	switch (event.type) { 
-	  case SDL_WINDOWEVENT: 
-            switch (event.window.event) { 
-	    case SDL_WINDOWEVENT_CLOSE: 
-              Done = 1; 
-              break; 
-          } 
-          break; 
-       } 
-    }
-  //fprintf(stderr, "Frame: %d\n", FrameCnt);
+
+  SDL_Surface* surf = SDL_CreateRGBSurfaceFrom((void*)data, width, height, depth, pitch,
+                                             rmask, gmask, bmask, amask);
+  if (surf == NULL) {
+    fprintf(stderr,"Creating surface failed: %s", SDL_GetError());
+    stbi_image_free(data);
+    ERR()
+  }
+
 }
 
 void
@@ -125,6 +133,42 @@ setup(void) {
   }
 				  
 }
+
+void
+loop(void) {
+  FrameCnt ++;
+  if (Done) {
+    SDL_Quit();
+    return;
+  }
+  
+  SDL_SetRenderDrawColor(Renderer, BLK);
+  SDL_RenderClear(Renderer);
+
+  int x,y;
+  for(x=0; x < WINDOW_WIDTH; x++) {
+    for(y=0; y < WINDOW_HEIGHT; y++) {
+      SDL_SetRenderDrawColor(Renderer, RGB(0,x,y));
+      SDL_RenderDrawPoint(Renderer, x, y);
+    }
+  }
+  load_image();
+  SDL_RenderPresent(Renderer);
+  
+  while (SDL_PollEvent(&event)) { 
+	switch (event.type) { 
+	  case SDL_WINDOWEVENT: 
+            switch (event.window.event) { 
+	    case SDL_WINDOWEVENT_CLOSE: 
+              Done = 1; 
+              break; 
+          } 
+          break; 
+       } 
+    }
+  //fprintf(stderr, "Frame: %d\n", FrameCnt);
+}
+
 
 
 int

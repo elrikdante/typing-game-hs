@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "SDL2/SDL.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 int some_func(int, int);
 void some_func_impure(int, int);
 void createWindow(void);
