@@ -4,11 +4,12 @@ SDL_Window*    Window   = NULL;
 SDL_Renderer*  Renderer = NULL;
 SDL_Surface*   PrimaryS = NULL;
 SDL_Texture*   PrimaryT = NULL;
+SDL_Texture*   LogoT    = NULL;
 SDL_Event      event;
 char*          Alert    = NULL;
 int            Done     = 0;
 int            FrameCnt = 0;
-
+static const int NUM_STARS=500;
 static const int WINDOW_HEIGHT=500;
 static const int WINDOW_WIDTH =500;
 int
@@ -20,7 +21,7 @@ void
 some_func_impure(int a, int b) {
    printf("THE ANSWER: %d \n", some_func(a,b));
 }
-void
+SDL_Surface *
 load_image(void) {
   int req_format = STBI_rgb_alpha;
   int width, height, orig_format;
@@ -66,6 +67,12 @@ load_image(void) {
     ERR()
   }
 
+  LogoT = SDL_CreateTextureFromSurface(Renderer, surf);
+  if (NULL == LogoT) {
+     fprintf(stderr, "SDL_CreateTextureFromSurface(): %s\n",SDL_GetError());
+     ERR()
+  }
+  return surf;
 }
 
 void
@@ -131,7 +138,8 @@ setup(void) {
         fprintf(stderr,"SDL_CreateRGBSurface() failed: %s", SDL_GetError());
         ERR()
   }
-				  
+
+  load_image();				  
 }
 
 void
@@ -144,15 +152,13 @@ loop(void) {
   
   SDL_SetRenderDrawColor(Renderer, BLK);
   SDL_RenderClear(Renderer);
-
-  int x,y;
-  for(x=0; x < WINDOW_WIDTH; x++) {
-    for(y=0; y < WINDOW_HEIGHT; y++) {
-      SDL_SetRenderDrawColor(Renderer, RGB(0,x,y));
-      SDL_RenderDrawPoint(Renderer, x, y);
-    }
+  SDL_RenderCopy(Renderer, LogoT, NULL , NULL);
+  int starCount;
+  for (starCount=0; starCount < NUM_STARS; starCount++) {
+    SDL_SetRenderDrawColor(Renderer, WHT);
+    SDL_RenderDrawPoint(Renderer, rand() % WINDOW_WIDTH , rand() % WINDOW_HEIGHT);
   }
-  load_image();
+
   SDL_RenderPresent(Renderer);
   
   while (SDL_PollEvent(&event)) { 
