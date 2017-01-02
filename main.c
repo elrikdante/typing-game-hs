@@ -12,16 +12,6 @@ static const int NUM_STARS=500;
 static const int WINDOW_HEIGHT=500;
 static const int WINDOW_WIDTH =500;
 
-int
-some_func(int a, int b){
-  return a + b;
-}
-
-void
-some_func_impure(int a, int b) {
-   printf("THE ANSWER: %d \n", some_func(a,b));
-}
-
 ImageTexture*
 loadImageTextureFromFilename(const char* filename) {
   int req_format = STBI_rgb_alpha;

@@ -23,14 +23,9 @@ typedef struct {
   ImageTexture** Textures;
 } RenderState;
 
-
-int some_func(int, int);
-void some_func_impure(int, int);
-void createWindow(void);
 void setup(void);
 void loop(void);
 void alert(char*);
-//SDL_Texture* loadTextureFromImage(char*);
 ImageTexture* loadImageTextureFromFilename(const char*);
 
 
