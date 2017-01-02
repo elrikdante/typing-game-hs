@@ -3,7 +3,6 @@
 SDL_Window*    Window   = NULL;
 SDL_Renderer*  Renderer = NULL;
 SDL_Surface*   PrimaryS = NULL;
-SDL_Texture*   PrimaryT = NULL;
 SDL_Texture*   LogoT    = NULL;
 SDL_Event      event;
 char*          Alert    = NULL;
@@ -12,6 +11,7 @@ int            FrameCnt = 0;
 static const int NUM_STARS=500;
 static const int WINDOW_HEIGHT=500;
 static const int WINDOW_WIDTH =500;
+
 int
 some_func(int a, int b){
   return a + b;
@@ -22,8 +22,8 @@ some_func_impure(int a, int b) {
    printf("THE ANSWER: %d \n", some_func(a,b));
 }
 
-SDL_Texture *
-loadTextureFromImage(char* filename) {
+ImageTexture*
+loadImageTextureFromFilename(const char* filename) {
   int req_format = STBI_rgb_alpha;
   int width, height, orig_format;
   unsigned char* data = stbi_load(
@@ -75,7 +75,11 @@ loadTextureFromImage(char* filename) {
      ERR()
   }
   stbi_image_free(data);
-  return texture;
+
+  ImageTexture* imgT = malloc(sizeof(ImageTexture));
+  imgT->filename = filename;
+  imgT->texture  = texture;
+  return imgT;
 }
 
 void
@@ -142,7 +146,9 @@ setup(void) {
         ERR()
   }
 
-  LogoT = loadTextureFromImage("./dist/logo.png");
+  ImageTexture* t = loadImageTextureFromFilename("./dist/logo.png");
+
+  LogoT = t->texture;
 }
 
 void
@@ -178,30 +184,6 @@ loop(void) {
   //fprintf(stderr, "Frame: %d\n", FrameCnt);
 }
 
-
-
 int
 main(int argc, char** argv){  return 0; }
-
-  /* SDL_LockSurface(PrimaryS); */
-  
-  /* int x,y; */
-  /* for(x=0; x < WINDOW_WIDTH; x++) { */
-  /*   for(y=0; y < WINDOW_HEIGHT; y++) { */
-  /*     SDL_MapRGBA( */
-  /*                   PrimaryS->format, */
-  /*                   255, */
-  /*                   255, */
-  /*                   255, */
-  /*                   255 */
-  /* 		  ); */
-  /*   } */
-  /* } */
-  /* SDL_UnlockSurface(PrimaryS); */
-  /* PrimaryT = SDL_CreateTextureFromSurface(Renderer, PrimaryS); */
-  /* if (NULL == PrimaryT) { */
-  /*    fprintf(stderr, "SDL_CreateTextureFromSurface(): %s\n",SDL_GetError()); */
-  /*    ERR() */
-  /* } */
-  /* SDL_RenderCopy(Renderer, PrimaryT,NULL, NULL); */
 
