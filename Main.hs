@@ -4,6 +4,9 @@ import Foreign
 import Foreign.Ptr
 import Foreign.C.Types
 import Foreign.C.String
+import Foreign.Marshal.Alloc
+import Foreign.C.String
+
 import Control.Monad
 import Control.Concurrent
 foreign import ccall unsafe "lib.h some_func" 
@@ -15,16 +18,19 @@ foreign import ccall safe "lib.h some_func_impure"
 foreign import ccall safe "lib.h setup"
   sdlSetup :: IO ()
 
+foreign import ccall unsafe "lib.h alert"
+  sdlAlert :: Ptr CChar -> IO ()
+
+foreign import ccall unsafe "lib.h loop"
+  sdlRunFrame :: IO ()
+
 main = do
-     print "Hello"
-     print (show $ some_func 30 30)
-     print (show $ some_func 40 30)
-     some_func' 10 30
-     some_func' 12 30
      sdlSetup
+     withCAString "Some Words" $ \cstr -> do
+       str <- peekCAString cstr
+       print $ "The Str: " ++ str
+       sdlAlert cstr
      forM_ (repeat (undefined :: Int)) $ \_ -> do
-       threadDelay 60000000
-       print "Hello"
-     	  
+        sdlRunFrame
 
 
