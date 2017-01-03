@@ -15,10 +15,10 @@ default:
 	stack ghc Main.hs dist/lib.o -- -o dist/hs-exe
 
 linker:
-	gcc -Xlinker -lc main.c -lSDL2 -lSDL2_tff -I/usr/local/include/SDL2 -Ivendor/stb -v
+	gcc -Xlinker -lc main.c -lSDL2 -lSDL2_ttf -I/usr/local/include/SDL2 -Ivendor/stb -I/usr/local/Cellar/sdl2_ttf/2.0.14 -v
 
 tidy:
-	find . \( -name "*~" -o -name "Main.hi" -o -name "Main.o" \) -exec rm -i {} \;
+	find . \( -name "*~" -o -name "Main.hi" -o -name "Main.o" -o -name "a.out" \) -exec rm -i {} \;
 
 
 debug:
