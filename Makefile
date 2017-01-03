@@ -2,16 +2,28 @@ default:
 	mkdir -p dist
 	gcc -Wall -O3 --shared \
 	-g \
-	-I/usr/local/include/SDL2 -lSDL2 \
+	-v \
+	-I/usr/local/include/SDL2 \
+	-Ivendor \
 	-Ivendor/stb \
-	-fPIC -lc main.c -o dist/lib.o
+	-lc \
+	-lSDL2 \
+	-Wl,-v \
+	-fPIC vendor/libSDL2_ttf.a main.c -o dist/lib.o 
+
 	stack ghc Main.hs dist/lib.o -- -o dist/hs-exe
+
+linker:
+	gcc -Xlinker -lc main.c -lSDL2 -lSDL2_tff -I/usr/local/include/SDL2 -Ivendor/stb -v
+
 tidy:
 	find . \( -name "*~" -o -name "Main.hi" -o -name "Main.o" \) -exec rm -i {} \;
 
+
 debug:
-	sudo dtruss ./dist/hs-exe 2>&1 | tee debug.log
+	export DYLD_LIBRARY_PATH=/Library/Frameworks
+	sudo dtruss ./dist/hs-exe 2>&1 \| tee debug.log
 panic:
 	lldb ./dist/hs-exe
 
-.PHONY: tidy debug panic
+.PHONY: tidy debug panic linker
