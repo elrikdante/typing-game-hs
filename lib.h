@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SDL2/SDL.h"
-#include </Library/Frameworks/SDL2_ttf.framework/Headers/SDL_ttf.h>
+#include "SDL_ttf.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
