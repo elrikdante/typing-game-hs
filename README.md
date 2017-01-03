@@ -1,4 +1,4 @@
-*) install
+#Install#
 * brew install sdl2
 * brew install sdl2_ttf
 
@@ -14,12 +14,12 @@
 * source: https://www.libsdl.org/projects/SDL_ttf/
 * source: https://blogs.oracle.com/dipol/entry/dynamic_libraries_rpath_and_mac
 
-*) other
+#Other Resources#
 * man install_name_tool
 
-*) tips 
+#Tips#
 * Signing SDL Extenion framework
 * codesign -f -s - SDL2_ttf.framework #=> SDL2_ttf.framework: replacing existing signature
 
-*) diagnostics
+#Diagnostics#
 * objdump -p dist/hs-exe
