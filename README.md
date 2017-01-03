@@ -13,6 +13,7 @@
 * source: http://lazyfoo.net/tutorials/SDL/06_extension_libraries_and_loading_other_image_formats/mac/index.php
 * source: https://www.libsdl.org/projects/SDL_ttf/
 * source: https://blogs.oracle.com/dipol/entry/dynamic_libraries_rpath_and_mac
+* source: http://www.sdltutorials.com/sdl-ttf
 
 #Other Resources#
 * man install_name_tool

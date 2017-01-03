@@ -22,7 +22,6 @@ tidy:
 
 
 debug:
-	export DYLD_LIBRARY_PATH=/Library/Frameworks
 	sudo dtruss ./dist/hs-exe 2>&1 \| tee debug.log
 panic:
 	lldb ./dist/hs-exe
