@@ -4,7 +4,9 @@ SDL_Window*    Window   = NULL;
 SDL_Renderer*  Renderer = NULL;
 SDL_Surface*   PrimaryS = NULL;
 SDL_Texture*   LogoT    = NULL;
+TTF_Font*      Font     = NULL;
 SDL_Event      event;
+
 char*          Alert    = NULL;
 int            Done     = 0;
 int            FrameCnt = 0;
@@ -84,6 +86,16 @@ setup(void) {
     fprintf(stderr, "Could not initialise %s\n",SDL_GetError());
     ERR()
   }
+
+  TTF_Init();
+
+  char*     font_path = "/System/Library/Fonts/SFNSDisplay.ttf";
+  Font = TTF_OpenFont(font_path, 24);
+  if (NULL == Font) {
+    fprintf(stderr, "error: font (%s)  not found\n ", font_path);
+    ERR()
+  }
+
   Window = SDL_CreateWindow(
 			    "X",
 			    SDL_WINDOWPOS_CENTERED,
@@ -157,23 +169,21 @@ loop(void) {
     SDL_SetRenderDrawColor(Renderer, WHT);
     SDL_RenderDrawPoint(Renderer, rand() % WINDOW_WIDTH , rand() % WINDOW_HEIGHT);
   }
-  TTF_Init();
-  char*     font_path = "/System/Library/Fonts/SFNSDisplay.ttf";
-  TTF_Font* font      = TTF_OpenFont(font_path, 24);
-  if (NULL == font) {
-    fprintf(stderr, "error: font (%s)  not found\n ", font_path);
-    ERR()
-  }
-  SDL_Color White = {255, 255, 255};
-  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "put your text here", White);
-  SDL_Texture* Message = SDL_CreateTextureFromSurface(Renderer, surfaceMessage);
-  SDL_Rect Message_rect; //create a rect
-  Message_rect.x = 0;  //controls the rect's x coordinate 
+
+  SDL_Color    White          = {0, FrameCnt, FrameCnt, FrameCnt};
+  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Font, "put your text here", White);
+  SDL_Texture* Message        = SDL_CreateTextureFromSurface(Renderer, surfaceMessage);
+
+  SDL_Rect     Message_rect; //create a rect
+
+  Message_rect.x = FrameCnt;  //controls the rect's x coordinate 
   Message_rect.y = 0; // controls the rect's y coordinte
   Message_rect.w = 100; // controls the width of the rect
   Message_rect.h = 100; // controls the height of the rect
+
   SDL_RenderCopy(Renderer, Message, NULL, &Message_rect);
   SDL_RenderPresent(Renderer);
+
   while (SDL_PollEvent(&event)) { 
 	switch (event.type) { 
 	  case SDL_WINDOWEVENT: 
