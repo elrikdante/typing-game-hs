@@ -10,6 +10,7 @@ SDL_Event      event;
 char*          Alert    = NULL;
 int            Done     = 0;
 int            FrameCnt = 0;
+
 static const int NUM_STARS=500;
 static const int WINDOW_HEIGHT=500;
 static const int WINDOW_WIDTH =500;
@@ -170,8 +171,28 @@ loop(void) {
     SDL_RenderDrawPoint(Renderer, rand() % WINDOW_WIDTH , rand() % WINDOW_HEIGHT);
   }
 
+  char*        phrase         ="put your text here";
+  EVP_MD_CTX   mdctx;
+  const EVP_MD* md;
+  unsigned char md_value[EVP_MAX_MD_SIZE];
+  int           md_len;
+
+  OpenSSL_add_all_digests();
+  md = EVP_get_digestbyname("md5");
+  
+  if (NULL == md) {
+    fprintf(stderr, "Can't get MD5???");
+    ERR()
+  }
+
+  EVP_MD_CTX_init(&mdctx);
+  EVP_DigestInit_ex(&mdctx, md, NULL);
+  EVP_DigestUpdate(&mdctx, phrase, strlen(phrase));
+  EVP_DigestFinal_ex(&mdctx, md_value, &md_len);
+  EVP_MD_CTX_cleanup(&mdctx);
+
   SDL_Color    White          = {0, FrameCnt, FrameCnt, FrameCnt};
-  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Font, "put your text here", White);
+  SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Font, md_value, White);
   SDL_Texture* Message        = SDL_CreateTextureFromSurface(Renderer, surfaceMessage);
 
   SDL_Rect     Message_rect; //create a rect

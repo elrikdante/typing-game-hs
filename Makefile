@@ -5,10 +5,12 @@ default:
 	-v \
 	-I/usr/local/include/SDL2 \
 	-I/usr/local/Cellar/sdl2_ttf/2.0.14 \
+	-I/usr/local/Cellar/openssl/1.0.2g/include \
 	-Ivendor/stb \
 	-lc \
 	-lSDL2 \
 	-lSDL2_ttf \
+	-lcrypto \
 	-Wl,-v \
 	-fPIC main.c -o dist/lib.o 
 

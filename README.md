@@ -14,6 +14,12 @@
 * source: https://www.libsdl.org/projects/SDL_ttf/
 * source: https://blogs.oracle.com/dipol/entry/dynamic_libraries_rpath_and_mac
 * source: http://www.sdltutorials.com/sdl-ttf
+* source: man 3 EVP_get_digestbyname
+* source: man 3 EVP_DigestInit
+
+#Fun Stuff#
+* http://eprint.iacr.org/2004/199.pdf 
+* http://cryptography.hyperlink.cz/md5/Vlastimil_Klima_MD5_collisions.pdf
 
 #Other Resources#
 * man install_name_tool
