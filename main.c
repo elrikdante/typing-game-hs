@@ -68,7 +68,7 @@ loadImageTextureFromFilename(const char* filename) {
      ERR()
   }
   stbi_image_free(data);
-
+  SDL_FreeSurface(surf);
   ImageTexture* imgT = malloc(sizeof(ImageTexture));
   imgT->filename = filename;
   imgT->texture  = texture;
@@ -194,7 +194,7 @@ loop(void) {
   SDL_Color    White          = {0, FrameCnt, FrameCnt, FrameCnt};
   SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Font, md_value, White);
   SDL_Texture* Message        = SDL_CreateTextureFromSurface(Renderer, surfaceMessage);
-
+  SDL_FreeSurface(surfaceMessage);
   SDL_Rect     Message_rect; //create a rect
 
   Message_rect.x = FrameCnt % WINDOW_WIDTH;  //controls the rect's x coordinate 
@@ -203,6 +203,7 @@ loop(void) {
   Message_rect.h = 100; // controls the height of the rect
 
   SDL_RenderCopy(Renderer, Message, NULL, &Message_rect);
+  SDL_DestroyTexture(Message);
   SDL_RenderPresent(Renderer);
 
   while (SDL_PollEvent(&event)) { 
