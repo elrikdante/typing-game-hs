@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <openssl/evp.h>
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_video.h"
 #include "SDL2/SDL_ttf.h"
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -28,7 +29,7 @@ typedef struct {
 
 void setup(void);
 void loop(void);
-void alert(char*);
+void alert(const char*);
 ImageTexture* loadImageTextureFromFilename(const char*);
 
 

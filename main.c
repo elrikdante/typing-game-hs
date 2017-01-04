@@ -76,7 +76,7 @@ loadImageTextureFromFilename(const char* filename) {
 }
 
 void
-alert(char* msg){
+alert(const char* msg){
   Alert = msg;
 }
 
@@ -103,7 +103,7 @@ setup(void) {
 			    SDL_WINDOWPOS_CENTERED,
 			    WINDOW_HEIGHT,
 			    WINDOW_WIDTH,
-			    SDL_WINDOW_SHOWN);
+			    SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_ALWAYS_ON_TOP | SDL_WINDOW_FULLSCREEN);
   if (NULL == Window) {
      fprintf(stderr, "Could not create window %s\n",SDL_GetError());
      ERR()
@@ -144,7 +144,7 @@ setup(void) {
 				  amask
 				  );
 
-  if (PrimaryS == NULL) {
+  if (NULL == PrimaryS) {
         fprintf(stderr,"SDL_CreateRGBSurface() failed: %s", SDL_GetError());
         ERR()
   }

@@ -19,6 +19,7 @@
 * source: man 3 EVP_DigestInit
 
 #Fun Stuff#
+* https://www.gnu.org/fun/jokes/eternal-flame.en.html
 * http://eprint.iacr.org/2004/199.pdf 
 * http://cryptography.hyperlink.cz/md5/Vlastimil_Klima_MD5_collisions.pdf
 
