@@ -197,7 +197,7 @@ loop(void) {
 
   SDL_Rect     Message_rect; //create a rect
 
-  Message_rect.x = FrameCnt;  //controls the rect's x coordinate 
+  Message_rect.x = FrameCnt % WINDOW_WIDTH;  //controls the rect's x coordinate 
   Message_rect.y = 0; // controls the rect's y coordinte
   Message_rect.w = 100; // controls the width of the rect
   Message_rect.h = 100; // controls the height of the rect
